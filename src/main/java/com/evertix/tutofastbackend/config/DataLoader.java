@@ -41,6 +41,7 @@ public class DataLoader {
     private final SessionDetailRepository sessionDetailRepository;
 
     private final ModelMapper   modelMapper = new ModelMapper();
+    private final Random rand = new Random();
 
     @Autowired
     public DataLoader(RoleRepository roleRepository, CourseRepository courseRepository, AuthenticationService authenticationService,
@@ -196,9 +197,9 @@ public class DataLoader {
         User teacher2 = this.userRepository.findByUsername("roberto.teacher").orElseThrow(()->
                 new ResourceNotFoundException("User with name: roberto.teacher not found"));
 
-        Random rand = new Random();
+        
         for (int i = 0; i < allCourses.size(); i++) {
-            int randomIndex = rand.nextInt(allCourses.size());
+            int randomIndex = this.rand.nextInt(allCourses.size());
             Course randomCourse = allCourses.get(randomIndex);
             if(i%2==0){
                 teacher1.getCourses().add(randomCourse);
@@ -291,8 +292,8 @@ public class DataLoader {
         //Make teachers apply to a random session request
         List<Session> sessionsOpen=sessionService.getAllOpenSessionRequest();
 
-        Random rand = new Random();
-        int randomIndex = rand.nextInt(sessionsOpen.size());
+        
+        int randomIndex = this.rand.nextInt(sessionsOpen.size());
         Session randomSession = sessionsOpen.get(randomIndex);
         sessionService.applyToSession(randomSession.getId(),this.userRepository.findByUsername("albert.teacher").orElseThrow(()->
                 new ResourceNotFoundException("User with name: albert.teacher not found")).getId());
