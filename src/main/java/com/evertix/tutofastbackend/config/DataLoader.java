@@ -172,11 +172,14 @@ public class DataLoader {
         workplace1.setUser(this.userRepository.findByUsername("albert.teacher").orElseThrow(()->
                 new ResourceNotFoundException("User with name: albert.teacher not found")));
         WorkExperience workplace2 = new WorkExperience(LocalDate.of(2010,3,18),LocalDate.of(2018,12,18), "Universidad Tecnologica del Perú");
-        workplace2.setUser(this.userRepository.findByUsername("albert.teacher").get());
+        workplace2.setUser(this.userRepository.findByUsername("albert.teacher").orElseThrow(()->
+                new ResourceNotFoundException("User with name: albert.teacher not found")));
         WorkExperience workplace3 = new WorkExperience(LocalDate.of(2004,3,18),LocalDate.of(2009,12,18), "Colegio Trilce");
-        workplace3.setUser(this.userRepository.findByUsername("roberto.teacher").get());
+        workplace3.setUser(this.userRepository.findByUsername("roberto.teacher").orElseThrow(()->
+                new ResourceNotFoundException("User with name: roberto.teacher not found")));
         WorkExperience workplace4 = new WorkExperience(LocalDate.of(2009,3,18),LocalDate.of(2019,12,18), "Universidad Mayor de San Marcos");
-        workplace4.setUser(this.userRepository.findByUsername("roberto.teacher").get());
+        workplace4.setUser(this.userRepository.findByUsername("roberto.teacher").orElseThrow(()->
+                new ResourceNotFoundException("User with name: roberto.teacher not found")));
 
         workExperienceRepository.saveAll(Arrays.asList(workplace1,workplace2,workplace3,workplace4));
 
@@ -188,18 +191,20 @@ public class DataLoader {
 
 
         List<Course> allCourses = courseRepository.findAll();
-        Optional<User> teacher1 = this.userRepository.findByUsername("albert.teacher");
-        Optional<User> teacher2 = this.userRepository.findByUsername("roberto.teacher");
+        Optional<User> teacher1 = this.userRepository.findByUsername("albert.teacher").orElseThrow(()->
+                new ResourceNotFoundException("User with name: albert.teacher not found"));
+        Optional<User> teacher2 = this.userRepository.findByUsername("roberto.teacher").orElseThrow(()->
+                new ResourceNotFoundException("User with name: roberto.teacher not found"));
 
         Random rand = new Random();
         for (int i = 0; i < allCourses.size(); i++) {
             int randomIndex = rand.nextInt(allCourses.size());
             Course randomCourse = allCourses.get(randomIndex);
             if(i%2==0){
-                teacher1.get().getCourses().add(randomCourse);
+                teacher1.getCourses().add(randomCourse);
                 userRepository.save(teacher1.get());
             }else {
-                teacher2.get().getCourses().add(randomCourse);
+                teacher2.getCourses().add(randomCourse);
                 userRepository.save(teacher2.get());
             }
 
@@ -260,24 +265,28 @@ public class DataLoader {
     void createSessionRequest(){
 
         //Create Session Request (STATUS = OPEN)
-        Optional<User> student1 = this.userRepository.findByUsername("jesus.student");
-        Optional<Course> course1 = this.courseRepository.findByName("History");
+        User student1 = this.userRepository.findByUsername("jesus.student").orElseThrow(()->
+                new ResourceNotFoundException("User with name: jesus.student not found"));
+        Course course1 = this.courseRepository.findByName("History").orElseThrow(()->
+                new ResourceNotFoundException("Course with name: History not found"));
         SessionSaveResource sessionSaveResource1=new SessionSaveResource(
                 LocalDateTime.of(2020, Month.NOVEMBER, 30, 18, 30),
                 LocalDateTime.of(2020, Month.NOVEMBER, 30, 20, 30),
                 "World War 2",EStatus.OPEN);
 
-        this.sessionService.createSessionRequest(course1.get().getId(),student1.get().getId(), sessionSaveResource1);
+        this.sessionService.createSessionRequest(course1.getId(),student1.getId(), sessionSaveResource1);
 
 
-        Optional<User> student2 = this.userRepository.findByUsername("maria.student");
-        Optional<Course> course2 = this.courseRepository.findByName("Biology");
+        User student2 = this.userRepository.findByUsername("maria.student").orElseThrow(()->
+                new ResourceNotFoundException("User with name: maria.student not found"));
+        Course course2 = this.courseRepository.findByName("Biology").orElseThrow(()->
+                new ResourceNotFoundException("Course with name: Biology not found"));
         SessionSaveResource sessionSaveResource2=new SessionSaveResource(
                 LocalDateTime.of(2020, Month.DECEMBER, 1, 13, 30),
                 LocalDateTime.of(2020, Month.DECEMBER, 1, 17, 30),
                 "Human Respiratory System",EStatus.OPEN);
 
-        this.sessionService.createSessionRequest(course2.get().getId(),student2.get().getId(), sessionSaveResource2);
+        this.sessionService.createSessionRequest(course2.getId(),student2..getId(), sessionSaveResource2);
 
         //Make teachers apply to a random session request
         List<Session> sessionsOpen=sessionService.getAllOpenSessionRequest();
@@ -285,23 +294,27 @@ public class DataLoader {
         Random rand = new Random();
         int randomIndex = rand.nextInt(sessionsOpen.size());
         Session randomSession = sessionsOpen.get(randomIndex);
-        sessionService.applyToSession(randomSession.getId(),this.userRepository.findByUsername("albert.teacher").get().getId());
-        sessionService.applyToSession(randomSession.getId(),this.userRepository.findByUsername("roberto.teacher").get().getId());
+        sessionService.applyToSession(randomSession.getId(),this.userRepository.findByUsername("albert.teacher").orElseThrow(()->
+                new ResourceNotFoundException("User with name: albert.teacher not found")).getId());
+        sessionService.applyToSession(randomSession.getId(),this.userRepository.findByUsername("roberto.teacher").orElseThrow(()->
+                new ResourceNotFoundException("User with name: roberto.teacher not found")).getId());
 
     }
 
     void createSessionHistory(){
 
-        Optional<User> student2 = this.userRepository.findByUsername("maria.student");
-        Optional<Course> course2 = this.courseRepository.findByName("Arithmetics");
+        User student2 = this.userRepository.findByUsername("maria.student").orElseThrow(()->
+                new ResourceNotFoundException("User with name: maria.student not found"));
+        Course course2 = this.courseRepository.findByName("Arithmetics");.orElseThrow(()->
+                new ResourceNotFoundException("Course with name: Biology not found"))
 
         Session session = new Session(LocalDateTime.of(2020, Month.NOVEMBER, 26, 13,0),
                                       LocalDateTime.of(2020, Month.NOVEMBER, 26, 15,0),
                                       EStatus.FINISHED_AND_RATED,
                                 "World War 2",
                                         "www.skype.com/29",
-                                        student2.get(),
-                                        course2.get()
+                                        student2,
+                                        course2
                                         );
         Session savedSession = this.sessionRepository.save(session);
 
