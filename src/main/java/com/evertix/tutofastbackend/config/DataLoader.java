@@ -169,7 +169,8 @@ public class DataLoader {
         //Set Work Experiences for User Teacher
 
         WorkExperience workplace1 = new WorkExperience(LocalDate.of(2005,3,18),LocalDate.of(2010,12,18), "Colegio Alfonso Ugarte");
-        workplace1.setUser(this.userRepository.findByUsername("albert.teacher").get());
+        workplace1.setUser(this.userRepository.findByUsername("albert.teacher").orElseThrow(()->
+                new ResourceNotFoundException("User with name: albert.teacher not found")).get());
         WorkExperience workplace2 = new WorkExperience(LocalDate.of(2010,3,18),LocalDate.of(2018,12,18), "Universidad Tecnologica del Perú");
         workplace2.setUser(this.userRepository.findByUsername("albert.teacher").get());
         WorkExperience workplace3 = new WorkExperience(LocalDate.of(2004,3,18),LocalDate.of(2009,12,18), "Colegio Trilce");
