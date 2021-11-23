@@ -12,7 +12,7 @@ import com.evertix.tutofastbackend.service.SubscriptionService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
+import com.evertix.tutofastbackend.exception.ResourceNotFoundException;
 import java.io.Console;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
