@@ -62,7 +62,7 @@ public class ReviewServiceImpl implements ReviewService {
                     Integer size=this.getTotalReviewsOfTeacher(teacherId);
                     teacher.setAverageStars(teacher.getAverageStars()
                             .multiply(BigDecimal.valueOf(size))
-                            .add(stars).divide(BigDecimal.valueOf(size+1)));
+                            .add(stars).divide(BigDecimal.valueOf((long)size+1)));
                 }
                 userRepository.save(teacher);
                 review.setStudent(student);

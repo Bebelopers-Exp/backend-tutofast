@@ -46,15 +46,15 @@ public class SubscriptionServiceImp implements SubscriptionService {
 
     @Override
     public ResponseEntity<?> subscribeToPlan(Long userId, Long planId) {
-        Optional<User> user = this.userRepository.findById(userId);
+        User user = this.userRepository.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User with id: "+userId+" not found"));
 
-        Optional<Plan> plan = this.planRepository.findById(planId);
+        Plan plan = this.planRepository.findById(planId).orElseThrow(()-> new ResourceNotFoundException("Plan with id: "+planId+" not found"));
 
         Optional<Role> role = this.roleRepository.findByName(ERole.ROLE_STUDENT);
 
 
         boolean var=false;
-        for(Role roli: user.get().getRoles()){
+        for(Role roli: user.getRoles()){
             if (roli.getName().equals(ERole.ROLE_STUDENT)){
                 var=true;
             };
@@ -72,8 +72,8 @@ public class SubscriptionServiceImp implements SubscriptionService {
                     }
                 }
             }
-            Subscription savedSubscription= this.subscribeUserToPlan(user.get(),plan.get());
-            this.reloadHoursCredit(user.get(),plan.get());
+            Subscription savedSubscription= this.subscribeUserToPlan(user.get(),plan);
+            this.reloadHoursCredit(user,plan);
             return ResponseEntity.ok(savedSubscription);
         } else {
             return ResponseEntity.badRequest().body(new MessageResponse("Only student can subscribe to a plan"));
@@ -142,9 +142,10 @@ public class SubscriptionServiceImp implements SubscriptionService {
     }
 
     public Subscription unsubscribe(Long subscriptionId){
-        Optional<Subscription> subscription=this.subscriptionRepository.findById(subscriptionId);
-        subscription.get().setActive(false);
-        return this.subscriptionRepository.save(subscription.get());
+        Subscription subscription=this.subscriptionRepository.findById(subscriptionId)
+            .orElseThrow(() -> new ResourceNotFoundException("Subscription with id: " + subscriptionId + " not found"));
+        subscription.setActive(false);
+        return this.subscriptionRepository.save(subscription);
 
     }
 }

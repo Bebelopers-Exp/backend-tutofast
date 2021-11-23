@@ -318,11 +318,13 @@ public class DataLoader {
                                         );
         Session savedSession = this.sessionRepository.save(session);
 
-        Optional<User> teacher1 = this.userRepository.findByUsername("albert.teacher");
-        Optional<User> teacher2 = this.userRepository.findByUsername("roberto.teacher");
+        User teacher1 = this.userRepository.findByUsername("albert.teacher").orElseThrow(()->
+                new ResourceNotFoundException("User with name: albert.teacher not found"));
+        User teacher2 = this.userRepository.findByUsername("roberto.teacher").orElseThrow(()->
+                new ResourceNotFoundException("User with name: roberto.teacher not found"));
 
-        SessionDetail sessionDetail1 = new SessionDetail(false,savedSession,teacher1.get());
-        SessionDetail sessionDetail2 = new SessionDetail(true,savedSession,teacher2.get());
+        SessionDetail sessionDetail1 = new SessionDetail(false,savedSession,teacher1);
+        SessionDetail sessionDetail2 = new SessionDetail(true,savedSession,teacher2);
 
         this.sessionDetailRepository.saveAll(Arrays.asList(sessionDetail1,sessionDetail2));
 
