@@ -286,7 +286,7 @@ public class DataLoader {
                 LocalDateTime.of(2020, Month.DECEMBER, 1, 17, 30),
                 "Human Respiratory System",EStatus.OPEN);
 
-        this.sessionService.createSessionRequest(course2.getId(),student2..getId(), sessionSaveResource2);
+        this.sessionService.createSessionRequest(course2.getId(),student2.getId(), sessionSaveResource2);
 
         //Make teachers apply to a random session request
         List<Session> sessionsOpen=sessionService.getAllOpenSessionRequest();
@@ -305,8 +305,8 @@ public class DataLoader {
 
         User student2 = this.userRepository.findByUsername("maria.student").orElseThrow(()->
                 new ResourceNotFoundException("User with name: maria.student not found"));
-        Course course2 = this.courseRepository.findByName("Arithmetics");.orElseThrow(()->
-                new ResourceNotFoundException("Course with name: Biology not found"))
+        Course course2 = this.courseRepository.findByName("Arithmetics").orElseThrow(()->
+                new ResourceNotFoundException("Course with name: Biology not found"));
 
         Session session = new Session(LocalDateTime.of(2020, Month.NOVEMBER, 26, 13,0),
                                       LocalDateTime.of(2020, Month.NOVEMBER, 26, 15,0),
