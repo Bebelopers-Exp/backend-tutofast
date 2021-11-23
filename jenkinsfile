@@ -19,7 +19,15 @@ pipeline {
               }
             }
           }
-          stage("package Stage"){
+
+        stage('sonarQube Quality'){
+          steps{
+            withSonarQubeEnv('sonarQube'){
+              bat'mvn clean verify sonar:sonar'
+              }
+            }
+          }
+        stage("package Stage"){
             steps{
               withMaven(maven: 'MAVEN_3_6_3'){
                 bat 'mvn package'
