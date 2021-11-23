@@ -205,7 +205,7 @@ public class DataLoader {
                 userRepository.save(teacher1);
             }else {
                 teacher2.getCourses().add(randomCourse);
-                userRepository.save(teacher2.);
+                userRepository.save(teacher2);
             }
 
             allCourses.remove(randomIndex);
