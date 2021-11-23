@@ -202,10 +202,10 @@ public class DataLoader {
             Course randomCourse = allCourses.get(randomIndex);
             if(i%2==0){
                 teacher1.getCourses().add(randomCourse);
-                userRepository.save(teacher1.get());
+                userRepository.save(teacher1);
             }else {
                 teacher2.getCourses().add(randomCourse);
-                userRepository.save(teacher2.get());
+                userRepository.save(teacher2.);
             }
 
             allCourses.remove(randomIndex);
