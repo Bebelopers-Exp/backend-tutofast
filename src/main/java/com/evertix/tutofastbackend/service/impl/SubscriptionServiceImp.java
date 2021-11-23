@@ -72,7 +72,7 @@ public class SubscriptionServiceImp implements SubscriptionService {
                     }
                 }
             }
-            Subscription savedSubscription= this.subscribeUserToPlan(user.get(),plan);
+            Subscription savedSubscription= this.subscribeUserToPlan(user,plan);
             this.reloadHoursCredit(user,plan);
             return ResponseEntity.ok(savedSubscription);
         } else {
