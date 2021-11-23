@@ -191,9 +191,9 @@ public class DataLoader {
 
 
         List<Course> allCourses = courseRepository.findAll();
-        Optional<User> teacher1 = this.userRepository.findByUsername("albert.teacher").orElseThrow(()->
+        User teacher1 = this.userRepository.findByUsername("albert.teacher").orElseThrow(()->
                 new ResourceNotFoundException("User with name: albert.teacher not found"));
-        Optional<User> teacher2 = this.userRepository.findByUsername("roberto.teacher").orElseThrow(()->
+        User teacher2 = this.userRepository.findByUsername("roberto.teacher").orElseThrow(()->
                 new ResourceNotFoundException("User with name: roberto.teacher not found"));
 
         Random rand = new Random();
