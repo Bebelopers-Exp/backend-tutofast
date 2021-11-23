@@ -259,7 +259,7 @@ public class DataLoader {
         }));
 
 
-        this.reviewService.createReview(student.get().getId(), teacher.get().getId(),modelMapper.map(review, ReviewSaveResource.class));
+        this.reviewService.createReview(student.isPresent().get().getId(), teacher.isPresent().get().getId(),modelMapper.map(review, ReviewSaveResource.class));
 
     }
 
